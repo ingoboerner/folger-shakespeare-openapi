@@ -1,0 +1,617 @@
+info:
+  description: "This is an unoffical documentation of the API of the Folger Shakespeare\
+    \ Project.\n        The offical documentation can be found here: https://www.folgerdigitaltexts.org/api."
+  version: '1.0'
+  contact:
+    name: Folger Shakespeare Project
+    email: info@folger.edu
+  license:
+    name: License Unknown
+    url: None
+  title: Folger Shakespeare API Tools
+servers:
+- description: Folger API
+  url: https://www.folgerdigitaltexts.org
+externalDocs:
+  description: OpenAPI Documentation
+  url: https://github.com/ingoboerner/folger-shakespeare-openapi
+tags:
+- name: synopsis
+  description: synopsis of the play and its scenes
+- name: ftln
+  description: text at Folger through line number
+- name: word
+  description: information about a word
+- name: segment
+  description: text of a segment identified by xml:id
+- name: text
+  description: spoken text in a play
+- name: charText
+  description: character's text
+- name: concordance
+  description: words used (in spoken text) and their frequency
+- name: monologue
+  description: speeches longer than the given line count
+- name: onStage
+  description: characters on stage
+- name: charChart
+  description: character chart
+- name: parts
+  description: parts/cue scripts
+- name: witScript
+  description: witness scripts
+- name: sounds
+  description: sounds
+paths:
+  /{playcode}/synopsis:
+    get:
+      tags:
+      - synopsis
+      summary: synopsis of a play
+      description: Returns a synopsis of the play and its scenes.
+      operationId: get_synopsis_of_play
+      responses:
+        '200':
+          description: successful. HTML page with the synopsis.
+          content:
+            text/html:
+              schema:
+                type: string
+      parameters:
+      - in: path
+        name: playcode
+        schema:
+          type: string
+          enum: &id001
+          - AWW
+          - Ant
+          - AYL
+          - Err
+          - Cor
+          - Cym
+          - Ham
+          - 1H4
+          - 2H4
+          - H5
+          - 1H6
+          - 2H6
+          - 3H6
+          - H8
+          - JC
+          - Jn
+          - Lr
+          - LLL
+          - Mac
+          - MM
+          - MV
+          - Wiv
+          - MND
+          - Ado
+          - Oth
+          - Per
+          - R2
+          - R3
+          - Rom
+          - Shr
+          - Tmp
+          - Tim
+          - Tit
+          - Tro
+          - TN
+          - TGV
+          - TNK
+          - WT
+        required: true
+  /{playcode}/synopsis/{act}:
+    get:
+      tags:
+      - synopsis
+      summary: synopsis of an act
+      description: Returns a synopsis of an act and its scenes.
+      operationId: get_synopsis_of_act
+      responses:
+        '200':
+          description: successful. HTML page with the synopsis.
+          content:
+            text/html:
+              schema:
+                type: string
+      parameters:
+      - in: path
+        name: playcode
+        schema:
+          type: string
+          enum: *id001
+        required: true
+      - in: path
+        name: act
+        description: ID of the act.
+        schema:
+          type: string
+        required: true
+  /{playcode}/synopsis/{act}/{scene}:
+    get:
+      tags:
+      - synopsis
+      summary: synopsis of a scene
+      description: Returns a synopsis a scene.
+      operationId: get_synopsis_of_scene
+      responses:
+        '200':
+          description: successful. HTML page with the synopsis.
+          content:
+            text/html:
+              schema:
+                type: string
+      parameters:
+      - in: path
+        name: playcode
+        schema:
+          type: string
+          enum: *id001
+        required: true
+      - in: path
+        name: act
+        description: ID of the act.
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: scene
+        description: ID of the scene.
+        schema:
+          type: string
+        required: true
+  /{playcode}/ftln/{ftln}:
+    get:
+      tags:
+      - ftln
+      summary: spoken text at that FTLN
+      description: Returns the spoken text at that FTLN (Folger through line number).
+      operationId: get_ftln
+      responses:
+        '200':
+          description: successful. HTML page with the text spoken at the ftln.
+          content:
+            text/html:
+              schema:
+                type: string
+      parameters:
+      - in: path
+        name: playcode
+        schema:
+          type: string
+          enum: *id001
+        required: true
+      - in: path
+        name: ftln
+        description: Folger through line number.
+        schema:
+          type: string
+        required: true
+  /{playcode}/word/{word_id}:
+    get:
+      tags:
+      - word
+      summary: information about a word
+      description: Returns information about a word.
+      operationId: get_word
+      responses:
+        '200':
+          description: successful. HTML page with the text spoken at the ftln.
+          content:
+            text/html:
+              schema:
+                type: string
+      parameters:
+      - in: path
+        name: playcode
+        schema:
+          type: string
+          enum: *id001
+        required: true
+      - in: path
+        name: word_id
+        description: ID of the word.
+        schema:
+          type: string
+        required: true
+  /{playcode}/segment/{object_id}:
+    get:
+      tags:
+      - segment
+      summary: text of a segment
+      description: Returns the text of that xml:id.
+      operationId: get_segment
+      responses:
+        '200':
+          description: successful. HTML page with the text spoken at the ftln.
+          content:
+            text/html:
+              schema:
+                type: string
+      parameters:
+      - in: path
+        name: playcode
+        schema:
+          type: string
+          enum: *id001
+        required: true
+      - in: path
+        name: object_id
+        description: ID of the segment.
+        schema:
+          type: string
+        required: true
+  /{playcode}/text>:
+    get:
+      tags:
+      - text
+      summary: Spoken text in a play
+      description: Returns only the spoken text in that play.
+      operationId: get_text
+      responses:
+        '200':
+          description: successful. HTML page with the text.
+          content:
+            text/html:
+              schema:
+                type: string
+      parameters:
+      - in: path
+        name: playcode
+        schema:
+          type: string
+          enum: *id001
+        required: true
+  /{playcode}/charText:
+    get:
+      tags:
+      - charText
+      summary: Character's Text
+      description: Returns a list of characters arranged according to amount of lines
+        spoken, with a link to each character's entire spoken text.
+      operationId: get_character_texts
+      responses:
+        '200':
+          description: successful. HTML page with list of characters arranged according
+            to amount of lines spoken, with a link to each character's entire spoken
+            text.
+          content:
+            text/html:
+              schema:
+                type: string
+      parameters:
+      - in: path
+        name: playcode
+        schema:
+          type: string
+          enum: *id001
+        required: true
+  /{playcode}/charText/{character_id}.html:
+    get:
+      tags:
+      - charText
+      summary: Single character's text
+      description: Returns the character's entire spoken text.
+      operationId: get_character_text_by_id
+      responses:
+        '200':
+          description: successful. HTML page with spoken text of a character.
+          content:
+            text/html:
+              schema:
+                type: string
+      parameters:
+      - in: path
+        name: playcode
+        schema:
+          type: string
+          enum: *id001
+        required: true
+      - in: path
+        name: character_id
+        description: ID of the character.
+        schema:
+          type: string
+        required: true
+  /{playcode}/charTextMinus:
+    get:
+      tags:
+      - charText
+      summary: Character's Text
+      description: Returns a list of characters arranged according to amount of lines
+        spoken, with a link to the play's spoken text, minus this character.
+      operationId: get_character_texts_minus
+      responses:
+        '200':
+          description: successful. HTML page with list of characters arranged according
+            to amount of lines spoken, with a link to each character's entire spoken
+            text.
+          content:
+            text/html:
+              schema:
+                type: string
+      parameters:
+      - in: path
+        name: playcode
+        schema:
+          type: string
+          enum: *id001
+        required: true
+  /{playcode}/charTextMinus/{character_id}.html:
+    get:
+      tags:
+      - charText
+      summary: Single character's text
+      description: Returns the character's entire spoken text.
+      operationId: get_all_character_text_minus_character
+      responses:
+        '200':
+          description: successful. HTML page with the play's text without the text
+            of the character.
+          content:
+            text/html:
+              schema:
+                type: string
+      parameters:
+      - in: path
+        name: playcode
+        schema:
+          type: string
+          enum: *id001
+        required: true
+      - in: path
+        name: character_id
+        description: ID of the character.
+        schema:
+          type: string
+        required: true
+  /{playcode}/concordance:
+    get:
+      tags:
+      - concordance
+      summary: concordance
+      description: Lists the words used (in spoken text) and their frequency.
+      operationId: get_concordance
+      responses:
+        '200':
+          description: successful. HTML page with token-count and type.
+          content:
+            text/html:
+              schema:
+                type: string
+      parameters:
+      - in: path
+        name: playcode
+        schema:
+          type: string
+          enum: *id001
+        required: true
+  /{playcode}/monologue:
+    get:
+      tags:
+      - monologue
+      summary: monologue
+      description: list of speeches longer than 30 lines.
+      operationId: get_monolouges_by_30_lines
+      responses:
+        '200':
+          description: successful. HTML page with segments considered a monolouge.
+          content:
+            text/html:
+              schema:
+                type: string
+      parameters:
+      - in: path
+        name: playcode
+        schema:
+          type: string
+          enum: *id001
+        required: true
+  /{playcode}/monologue/{line_count}:
+    get:
+      tags:
+      - monologue
+      summary: monologue by line count
+      description: list of speeches longer than a given line count.
+      operationId: get_monolouges_by_line_count
+      responses:
+        '200':
+          description: successful. HTML page with segments considered a monolouge.
+          content:
+            text/html:
+              schema:
+                type: string
+      parameters:
+      - in: path
+        name: playcode
+        schema:
+          type: string
+          enum: *id001
+        required: true
+      - in: path
+        name: line_count
+        description: Minimum number of lines.
+        schema:
+          type: string
+        required: true
+        example: 30
+  /{playcode}/onStage/{ftln}:
+    get:
+      tags:
+      - onStage
+      summary: onStage
+      description: list of characters on stage at a line identified by a Folger through
+        line number (ftln).
+      operationId: get_on_stage
+      responses:
+        '200':
+          description: successful. HTML page with character names.
+          content:
+            text/html:
+              schema:
+                type: string
+      parameters:
+      - in: path
+        name: playcode
+        schema:
+          type: string
+          enum: *id001
+        required: true
+      - in: path
+        name: ftln
+        description: Folger through line number.
+        schema:
+          type: string
+        required: true
+  /{playcode}/charChart:
+    get:
+      tags:
+      - charChart
+      summary: character chart
+      description: provides a graphical representation of who is on stage across a
+        timeline of the play.
+      operationId: get_characters_chart
+      responses:
+        '200':
+          description: successful. HTML page with a graphical representation of who
+            is on stage across a timeline.
+          content:
+            text/html:
+              schema:
+                type: string
+      parameters:
+      - in: path
+        name: playcode
+        schema:
+          type: string
+          enum: *id001
+        required: true
+  /{playcode}/parts:
+    get:
+      tags:
+      - parts
+      summary: parts for each character
+      description: provides parts or cue scripts for each character.
+      operationId: get_list_of_character_parts
+      responses:
+        '200':
+          description: successful. HTML page with links to cue scripts for the characters
+            of a play.
+          content:
+            text/html:
+              schema:
+                type: string
+      parameters:
+      - in: path
+        name: playcode
+        schema:
+          type: string
+          enum: *id001
+        required: true
+  /{playcode}/parts/{character}.html:
+    get:
+      tags:
+      - parts
+      summary: parts for character
+      description: provides parts or cue scripts for a single character.
+      operationId: get_parts_of_character
+      responses:
+        '200':
+          description: successful. HTML page with links to cue scripts for a single
+            characters of a play.
+          content:
+            text/html:
+              schema:
+                type: string
+      parameters:
+      - in: path
+        name: playcode
+        schema:
+          type: string
+          enum: *id001
+        required: true
+      - in: path
+        name: character
+        description: Name (?) of a character. Not in the ID-format {playcode}_{character},
+          but only the label.
+        schema:
+          type: string
+        required: true
+  /{playcode}/witScript:
+    get:
+      tags:
+      - witScript
+      summary: witness scripts for each character
+      description: provides links to witness scripts for each character.
+      operationId: get_list_of_witness_scripts
+      responses:
+        '200':
+          description: successful. HTML page with links to witness scripts for the
+            characters of a play.
+          content:
+            text/html:
+              schema:
+                type: string
+      parameters:
+      - in: path
+        name: playcode
+        schema:
+          type: string
+          enum: *id001
+        required: true
+  /{playcode}/witScript/{character}.html:
+    get:
+      tags:
+      - witScript
+      summary: witness script for a character
+      description: provides a "Witness" or "Witmore" script for a given character.
+        "witScripts" attempt to show what a character sees. They offer the play text
+        only when that character is on stage.
+      operationId: get_witness_script_of_character
+      responses:
+        '200':
+          description: successful. HTML page with links to the witness script for
+            a single characters of a play.
+          content:
+            text/html:
+              schema:
+                type: string
+      parameters:
+      - in: path
+        name: playcode
+        schema:
+          type: string
+          enum: *id001
+        required: true
+      - in: path
+        name: character
+        description: Name (?) of a character. Not in the ID-format {playcode}_{character},
+          but only the label.
+        schema:
+          type: string
+        required: true
+  /{playcode}/sounds:
+    get:
+      tags:
+      - sounds
+      summary: sounds
+      description: returns a list of all stage directions that contain sounds (i.e.,
+        "music," "flourish," "thunder").
+      operationId: get_sounds
+      responses:
+        '200':
+          description: successful. HTML page with stage directions that contain sounds.
+          content:
+            text/html:
+              schema:
+                type: string
+      parameters:
+      - in: path
+        name: playcode
+        schema:
+          type: string
+          enum: *id001
+        required: true
+openapi: 3.0.3
